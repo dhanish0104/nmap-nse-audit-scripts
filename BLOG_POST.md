@@ -1,4 +1,4 @@
-# Extending Nmap NSE: Two Custom Audit Scripts for SMTP and FTP
+# Extending Nmap NSE: Two Custom Security Scripts for SMTP and FTP
 
 **Author:** Dhanishkanth  
 **Roll No / Registration:** 24BCE1348  
@@ -12,11 +12,11 @@
 
 Network reconnaissance is one of the foundational phases of any security assessment. Nmap (Network Mapper) is the industry-standard tool for discovering hosts, open ports, and running services across computer networks. Beyond basic port scanning and service banner grabbing, Nmap includes a powerful, event-driven subsystem called the **Nmap Scripting Engine (NSE)**, which executes automation scripts written in the Lua programming language.
 
-Nmap ships out-of-the-box with over 600 scripts. However, many default discovery scripts are purely **informational**: they collect facts from the target service but do not judge whether those facts represent a security risk. For a hands-on cybersecurity assignment in my B.Tech Computer Science and Engineering program at VIT Chennai, I set out to bridge the gap between **scanning** (passively collecting facts) and **auditing** (evaluating those facts against security best practices).
+Nmap ships out-of-the-box with over 600 scripts. However, many default discovery scripts are purely **informational**: they collect facts from the target service but do not judge whether those facts represent a security risk. For a hands-on cybersecurity assignment in my B.Tech Computer Science and Engineering program at VIT Chennai, I set out to bridge the gap between passively collecting facts and actively evaluating those facts against security best practices.
 
 In this project, I developed two custom NSE scripts by extending existing Nmap scripts with an automated risk-evaluation layer:
 1. **`smtp-risk-check.nse`** (extending `smtp-commands.nse`): Connects to an SMTP mail server, interrogates it for supported commands via `EHLO` and `HELP`, and actively flags whether user enumeration is possible via `VRFY`/`EXPN` and whether message transmission lacks `STARTTLS` encryption.
-2. **`ftp-anon-plus.nse`** (extending `ftp-anon.nse`): Connects to an FTP server, authenticates anonymously, lists directory entries, and uses pattern matching to identify sensitive filenames (such as `.env`, `id_rsa`, `backup.zip`, and `passwd`), tagging each entry with `[NSE: sensitive]` and emitting a consolidated audit summary.
+2. **`ftp-anon-plus.nse`** (extending `ftp-anon.nse`): Connects to an FTP server, authenticates anonymously, lists directory entries, and uses pattern matching to identify sensitive filenames (such as `.env`, `id_rsa`, `backup.zip`, and `passwd`), tagging each entry with `[NSE: sensitive]` and emitting a consolidated summary of detected files.
 
 > [!NOTE]
 > **Ethics and Authorization:** All scans and evaluations described in this article were conducted strictly on an isolated loopback address (`127.0.0.1`) against simulated test services I set up myself. Never scan systems or networks without explicit, written authorization from their owners.
@@ -36,7 +36,7 @@ To appreciate why custom NSE scripts are valuable, consider how typical vulnerab
                               |
                               v
 +-------------------------------------------------------------+
-|            CUSTOM SECURITY AUDIT LAYER (ADDED)              |
+|         CUSTOM SECURITY EVALUATION LAYER (ADDED)            |
 |  4. Intercepts the raw protocol data inside Lua memory      |
 |  5. Evaluates features against security configuration rules |
 |  6. Performs pattern matching on sensitive assets           |
@@ -155,7 +155,7 @@ while True:
 
 ---
 
-## 5. Script 1: SMTP Audit (`smtp-risk-check.nse`)
+## 4. Script 1: SMTP Security Checks (smtp-risk-check.nse)
 
 ### A. How the Original Script Works (`smtp-commands.nse`)
 Originally written by **Jasey DePriest**, `smtp-commands.nse` operates in three linear phases:
@@ -245,7 +245,7 @@ end
 ---
 
 ### B. How the Updated Script Works (`smtp-risk-check.nse`)
-In my updated script (`smtp-commands-customs.nse`), I preserved the robust connection logic inside `go()`, but introduced an auditing interceptor called `check_risks(combined_text)`:
+In my updated script (`smtp-commands-customs.nse`), I preserved the robust connection logic inside `go()`, but introduced an evaluation function called `check_risks(combined_text)`:
 
 1. **Combined String Inspection:** Rather than evaluating `EHLO` and `HELP` responses separately, the script merges all returned capabilities into a single normalized uppercase string.
 2. **Enumeration Detection:** Checks for the presence of the keywords `VRFY` and `EXPN`. If found, it appends `[!] User enumeration possible via VRFY/EXPN`.
@@ -317,7 +317,7 @@ function go(host, port)
 end
 
 -- =========================================================================
--- ADDED FEATURE: Security Audit Layer
+-- ADDED FEATURE: Security Evaluation Layer
 -- =========================================================================
 local function check_risks(combined_text)
   local findings = {}
@@ -421,7 +421,7 @@ PORT   STATE SERVICE
 
 ---
 
-## 6. Script 2: FTP Audit (`ftp-anon-plus.nse`)
+## 5. Script 2: FTP Sensitive File Detection (tp-anon-plus.nse)
 
 ### A. How the Original Script Works (`ftp-anon.nse`)
 Authored by **Eddie Bell, Rob Nicholls, Ange Gutek, and David Fifield**, `ftp-anon.nse` performs anonymous login verification:
@@ -546,7 +546,7 @@ In `ftp-anon-custom.nse` (referenced here as `ftp-anon-plus.nse`), I added an au
    - `^backup`, `^database`, `^secret`, `^token`, `^config` (Archive and configuration assets)
 3. **Pattern Matcher (`is_sensitive`):** Evaluates extracted filenames case-insensitively against the pattern table.
 4. **Tagging & Aggregation:** If a match is found, appends `[NSE: sensitive]` to the file line and pushes the filename to a `sensitive_files` tracking table.
-5. **Audit Summary Footer:** After iterating through all entries, appends a dedicated summary line: `Sensitive files detected: <list of files>`.
+5. **Findings Summary Footer:** After iterating through all entries, appends a dedicated summary line: `Sensitive files detected: <list of files>`.
 
 #### Full Source Code: Updated `ftp-anon-plus.nse`
 ```lua
@@ -741,7 +741,7 @@ PORT   STATE SERVICE
 ```
 
 ![FTP Scan Comparison with Sensitive Files Flagged](screenshots/ftp_anon_plus_output.png)  
-*Figure 3: Original ftp-anon reports only that anonymous login is allowed (with maxlist=0), while the custom script inspects the files, tags each sensitive filename, and prints a consolidated audit summary.*
+*Figure 3: Original ftp-anon reports only that anonymous login is allowed (with maxlist=0), while the custom script inspects the files, tags each sensitive filename, and prints a consolidated summary of findings.*
 
 ---
 
@@ -749,12 +749,12 @@ PORT   STATE SERVICE
 
 | Evaluation Dimension | Original `smtp-commands.nse` | Updated `smtp-risk-check.nse` | Original `ftp-anon.nse` | Updated `ftp-anon-plus.nse` |
 | :--- | :--- | :--- | :--- | :--- |
-| **Primary Goal** | Command discovery | Security configuration audit | Anonymous access check | Sensitive data exposure audit |
+| **Primary Goal** | Command discovery | Security configuration check | Anonymous access check | Sensitive data exposure detection |
 | **Protocol Queries** | `EHLO`, `HELP` | `EHLO`, `HELP` | `USER`, `PASS`, `LIST` | `USER`, `PASS`, `LIST` |
 | **Logic Layer** | String formatting only | String formatting + Boolean rule evaluation | Permission bit parsing (`[NSE: writeable]`) | Permission bit parsing + Regex pattern evaluation |
 | **User Enumeration Check** | None (lists commands) | Flags `VRFY`/`EXPN` capabilities | N/A | N/A |
-| **Encryption Audit** | None (lists commands) | Flags missing `STARTTLS` | N/A | N/A |
-| **Filename Audit** | N/A | N/A | None | Checks 16 regex patterns |
+| **Encryption Verification** | None (lists commands) | Flags missing `STARTTLS` | N/A | N/A |
+| **Filename Security Check** | N/A | N/A | None | Checks 16 regex patterns |
 | **Summary Reporting** | None | Appends `[!]` flags | None | Appends `Sensitive files detected: ...` |
 
 ---
@@ -829,4 +829,4 @@ Source code and lab test files are maintained on GitHub:
 
 ## 12. Conclusion
 
-Extending Nmap NSE scripts in Lua demonstrates how network reconnaissance can be upgraded into proactive security auditing with minimal code overhead. By combining RFC protocol knowledge with simple pattern matching, we transformed basic data-collection scripts into actionable audit tools. Hands-on testing highlighted crucial engineering lessons in socket handling, firewall behavior, authentication quirks, and defensive server configuration.
+Extending Nmap NSE scripts in Lua demonstrates how network reconnaissance can be upgraded to deliver actionable security insights with minimal code overhead. By combining RFC protocol knowledge with simple pattern matching, we transformed basic data-collection scripts into actionable audit tools. Hands-on testing highlighted crucial engineering lessons in socket handling, firewall behavior, authentication quirks, and defensive server configuration.

@@ -72,7 +72,7 @@ workflow_html = """
     <div class="connector-line"></div>
     <div class="connector-badge">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>
-      <span>Custom Lua Security Audit Engine</span>
+      <span>Custom Lua Security Evaluation Engine</span>
     </div>
     <div class="connector-line"></div>
   </div>
@@ -80,7 +80,7 @@ workflow_html = """
   <!-- Step 2: Custom Audit Layer -->
   <div class="pipeline-card stage-audit">
     <div class="pipeline-header">
-      <div class="stage-tag tag-green">Phase 2 &bull; Active Security Audit</div>
+      <div class="stage-tag tag-green">Phase 2 &bull; Active Risk Evaluation</div>
       <span class="stage-role">Dhanishkanth's Custom Extension</span>
     </div>
     <div class="pipeline-body">
@@ -137,7 +137,7 @@ html = """<!DOCTYPE html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Extending Nmap NSE: Two Custom Audit Scripts for SMTP and FTP | Dhanishkanth</title>
+    <title>Extending Nmap NSE: Two Custom Security Scripts for SMTP and FTP | Dhanishkanth</title>
     
     <!-- Modern Typography -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -662,7 +662,7 @@ html = """<!DOCTYPE html>
                 <span class="hero-tag tag-course">💻 B.Tech Computer Science &amp; Engineering</span>
                 <span class="hero-tag tag-reg">🎓 Reg: 24BCE1348</span>
             </div>
-            <h1 class="hero-title">Extending Nmap NSE: Two Custom Audit Scripts for SMTP and FTP</h1>
+            <h1 class="hero-title">Extending Nmap NSE: Two Custom Security Scripts for SMTP and FTP</h1>
             <p class="hero-subtitle">Transforming informational network reconnaissance into automated security posture evaluation through Lua-based active policy checking.</p>
             
             <div class="hero-author-bar">
@@ -694,7 +694,7 @@ html = """<!DOCTYPE html>
     <!-- Footer -->
     <footer class="site-footer">
         <div class="footer-inner">
-            <p><strong>Extending Nmap NSE: Two Custom Audit Scripts for SMTP and FTP</strong></p>
+            <p><strong>Extending Nmap NSE: Two Custom Security Scripts for SMTP and FTP</strong></p>
             <p>Authored by <strong>Dhanishkanth (24BCE1348)</strong> &bull; School of Computer Science and Engineering &bull; Vellore Institute of Technology, Chennai</p>
             <div class="footer-badges">
                 <span class="hero-tag tag-vit">VIT Chennai</span>
