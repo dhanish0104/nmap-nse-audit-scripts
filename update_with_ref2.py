@@ -4,9 +4,11 @@ def get_b64(path):
     with open(path, 'rb') as f:
         return 'data:image/png;base64,' + base64.b64encode(f.read()).decode()
 
-img1 = get_b64('c:/DA-1BLOG/screenshots/smtp_risky_comparison.png')
-img2 = get_b64('c:/DA-1BLOG/screenshots/smtp_secure_scan.png')
-img3 = get_b64('c:/DA-1BLOG/screenshots/ftp_anon_plus_output.png')
+img_orig_smtp = get_b64('c:/DA-1BLOG/screenshots/orig_smtp_output.png')
+img_orig_ftp = get_b64('c:/DA-1BLOG/screenshots/orig_ftp_output.png')
+img_enh_smtp_risky = get_b64('c:/DA-1BLOG/screenshots/smtp_risky_comparison.png')
+img_enh_smtp_secure = get_b64('c:/DA-1BLOG/screenshots/smtp_secure_scan.png')
+img_enh_ftp = get_b64('c:/DA-1BLOG/screenshots/ftp_anon_plus_output.png')
 
 with open('C:/Program Files (x86)/Nmap/scripts/smtp-commands.nse', 'r', encoding='utf-8') as f:
     orig_smtp = f.read()
@@ -64,6 +66,11 @@ PORT   STATE SERVICE
 |_ Supported commands: HELO EHLO MAIL RCPT DATA QUIT HELP
 ```
 
+<p align="center">
+  <img src="{img_orig_smtp}" alt="Original smtp-commands scan output" style="max-width:100%; border:1px solid #ddd; border-radius:8px; box-shadow:0 4px 10px rgba(0,0,0,0.08); margin:15px 0;" />
+  <br><em>Terminal screenshot: Real output of the original smtp-commands.nse on 127.0.0.1:25.</em>
+</p>
+
 *Analysis of Output:* The reference script outputs `VRFY` and `EXPN` as regular commands without flagging that they can be leveraged by attackers for username harvesting. It also fails to notify the user that `STARTTLS` is missing.
 
 ---
@@ -99,6 +106,11 @@ PORT   STATE SERVICE
 21/tcp open  ftp
 |_ftp-anon: Anonymous FTP login allowed (FTP code 230)
 ```
+
+<p align="center">
+  <img src="{img_orig_ftp}" alt="Original ftp-anon scan output" style="max-width:100%; border:1px solid #ddd; border-radius:8px; box-shadow:0 4px 10px rgba(0,0,0,0.08); margin:15px 0;" />
+  <br><em>Terminal screenshot: Real output of the original ftp-anon.nse (maxlist=0) on 127.0.0.1:21.</em>
+</p>
 
 *Analysis of Output:* The reference script only reports whether anonymous login is permitted. Even when directory listing is enabled, it treats sensitive configuration and credential files as generic directory entries, leaving the burden of identifying sensitive data exposure entirely on manual inspection.
 
@@ -159,7 +171,7 @@ PORT   STATE SERVICE
 ```
 
 <p align="center">
-  <img src="{img1}" alt="SMTP Risky Server Output Comparison" style="max-width:100%; border:1px solid #ddd; border-radius:8px; box-shadow:0 4px 10px rgba(0,0,0,0.08); margin:15px 0;" />
+  <img src="{img_enh_smtp_risky}" alt="SMTP Risky Server Output Comparison" style="max-width:100%; border:1px solid #ddd; border-radius:8px; box-shadow:0 4px 10px rgba(0,0,0,0.08); margin:15px 0;" />
   <br><em>Figure 1: Back-to-back execution on the risky SMTP server showing the original script vs the newly enhanced script with [!] warnings.</em>
 </p>
 
@@ -176,7 +188,7 @@ PORT   STATE SERVICE
 ```
 
 <p align="center">
-  <img src="{img2}" alt="SMTP Secure Server Scan Output" style="max-width:100%; border:1px solid #ddd; border-radius:8px; box-shadow:0 4px 10px rgba(0,0,0,0.08); margin:15px 0;" />
+  <img src="{img_enh_smtp_secure}" alt="SMTP Secure Server Scan Output" style="max-width:100%; border:1px solid #ddd; border-radius:8px; box-shadow:0 4px 10px rgba(0,0,0,0.08); margin:15px 0;" />
   <br><em>Figure 2: Execution on the secure server confirming that zero warning lines appear when the server is properly configured.</em>
 </p>
 
@@ -230,7 +242,7 @@ PORT   STATE SERVICE
 ```
 
 <p align="center">
-  <img src="{img3}" alt="FTP Scan Output with Sensitive Files Tagged" style="max-width:100%; border:1px solid #ddd; border-radius:8px; box-shadow:0 4px 10px rgba(0,0,0,0.08); margin:15px 0;" />
+  <img src="{img_enh_ftp}" alt="FTP Scan Output with Sensitive Files Tagged" style="max-width:100%; border:1px solid #ddd; border-radius:8px; box-shadow:0 4px 10px rgba(0,0,0,0.08); margin:15px 0;" />
   <br><em>Figure 3: Output of ftp-anon-custom showing sensitive files flagged with [NSE: sensitive] and summarized at the bottom, while benign files (readme.txt) remain untagged.</em>
 </p>
 
@@ -274,4 +286,4 @@ with open('c:/DA-1BLOG/BLOG_POST.md', 'w', encoding='utf-8') as f:
 with open('c:/DA-1BLOG/BLOG1_BLOGGER.md', 'w', encoding='utf-8') as f:
     f.write(content)
 
-print("Both BLOG_POST.md and BLOG1_BLOGGER.md successfully updated with Reference Script 2!")
+print("Both markdown files updated with the 2 original screenshots!")
