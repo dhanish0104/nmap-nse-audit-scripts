@@ -23,8 +23,6 @@ In this project, I developed two custom NSE scripts by extending existing Nmap s
 
 ---
 
-## 2. Background: Scanning vs. Auditing
-
 To appreciate why custom NSE scripts are valuable, consider how typical vulnerability discovery workflows operate:
 
 ```
@@ -56,7 +54,7 @@ Every Nmap NSE script follows a standardized Lua lifecycle:
 
 ---
 
-## 3. Vulnerability Context & Security Significance
+## 2. Vulnerability Context & Security Significance
 
 ### A. SMTP Security Implications
 The Simple Mail Transfer Protocol (SMTP, RFC 821 / 5321) governs internet email routing. Two major misconfigurations frequently plague older or misconfigured MTAs:
@@ -81,7 +79,7 @@ The File Transfer Protocol (FTP, RFC 959) enables direct file operations over a 
 
 ---
 
-## 4. Test Lab Setup
+## 3. Test Lab Setup
 
 To maintain complete control, ensure reproducibility, and avoid external network dependencies, all tests were performed on an isolated local Windows environment targeting the loopback interface (`127.0.0.1`).
 
@@ -747,7 +745,7 @@ PORT   STATE SERVICE
 
 ---
 
-## 7. Comparative Analysis: Original vs. Updated Scripts
+## 6. Comparative Analysis: Original vs. Updated Scripts
 
 | Evaluation Dimension | Original `smtp-commands.nse` | Updated `smtp-risk-check.nse` | Original `ftp-anon.nse` | Updated `ftp-anon-plus.nse` |
 | :--- | :--- | :--- | :--- | :--- |
@@ -761,7 +759,7 @@ PORT   STATE SERVICE
 
 ---
 
-## 8. Step-by-Step Installation & Running Guide on Windows
+## 7. Step-by-Step Installation & Running Guide on Windows
 
 ### Step 1: Placing the Scripts
 Save the scripts in your Windows user directory (`%USERPROFILE%` / `C:\Users\<username>\`):
@@ -783,7 +781,7 @@ nmap -Pn --script=%USERPROFILE%\ftp-anon-plus.nse -p 21,990 127.0.0.1
 
 ---
 
-## 9. Real Engineering Challenges & Troubleshooting
+## 8. Real Engineering Challenges & Troubleshooting
 
 During the implementation and testing of these scripts, several practical obstacles arose:
 
@@ -804,7 +802,7 @@ During the implementation and testing of these scripts, several practical obstac
 
 ---
 
-## 10. Limitations & Future Work
+## 9. Limitations & Future Work
 
 - **VRFY Advertised vs. Functioning:** The script flags `VRFY` whenever it is advertised. Some mail servers advertise `VRFY` but return generic `252` responses to foil enumeration. A future enhancement could issue a test probe (e.g., `VRFY fakeuser12345`) to verify whether user existence is actually confirmed.
 - **Root Directory Limitation:** `ftp-anon-plus.nse` currently inspects only the root directory (`/`). In enterprise setups, sensitive files are often nested inside subdirectories (e.g., `/pub/backups/`). Adding shallow recursive traversal would improve detection.
@@ -812,13 +810,13 @@ During the implementation and testing of these scripts, several practical obstac
 
 ---
 
-## 11. Ethics & Legal Notice
+## 10. Ethics & Legal Notice
 
 Scanning networks without authorization is illegal under computer crime statutes (such as the IT Act in India and the CFAA in the United States). Always obtain written permission before scanning any target outside your own local lab environment.
 
 ---
 
-## 12. Acknowledgements & Credits
+## 11. Acknowledgements & Credits
 
 These scripts build directly on the foundation provided by the Nmap open-source project:
 - **`smtp-commands.nse`:** Originally authored by **Jasey DePriest**.
@@ -829,6 +827,6 @@ Source code and lab test files are maintained on GitHub:
 
 ---
 
-## 13. Conclusion
+## 12. Conclusion
 
 Extending Nmap NSE scripts in Lua demonstrates how network reconnaissance can be upgraded into proactive security auditing with minimal code overhead. By combining RFC protocol knowledge with simple pattern matching, we transformed basic data-collection scripts into actionable audit tools. Hands-on testing highlighted crucial engineering lessons in socket handling, firewall behavior, authentication quirks, and defensive server configuration.
