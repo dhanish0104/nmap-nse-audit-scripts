@@ -11,10 +11,12 @@ This repository contains two custom Nmap Scripting Engine (NSE) scripts that ext
 
 ## 📂 Scripts Included
 
-| Script | Based On | Original Authors | Key Features Added |
-| :--- | :--- | :--- | :--- |
-| [`smtp-risk-check.nse`](./smtp-risk-check.nse) | `smtp-commands.nse` | Jasey DePriest | • Flags user enumeration risk (`VRFY` / `EXPN`)<br>• Flags missing transport encryption (`STARTTLS`) |
-| [`ftp-anon-plus.nse`](./ftp-anon-plus.nse) | `ftp-anon.nse` | Eddie Bell, Rob Nicholls, Ange Gutek, David Fifield | • Highlights sensitive filenames (`.env`, `id_rsa`, `backup.zip`, `passwd`, etc.) with `[NSE: sensitive]`<br>• Outputs a summarized findings line |
+| Script | Script Type | Based On | Original Authors | Key Features / Enhancement | Direct Link |
+| :--- | :---: | :--- | :--- | :--- | :---: |
+| [`smtp-commands.nse`](./smtp-commands.nse) | **Base Reference 1** | Standard Nmap | Jasey DePriest | Base EHLO & HELP command enumeration | [View on GitHub](https://github.com/dhanish0104/nmap-nse-scripts/blob/main/smtp-commands.nse) |
+| [`smtp-risk-check.nse`](./smtp-risk-check.nse) | **Enhanced 1** | `smtp-commands.nse` | Jasey DePriest | • Flags user enumeration risk (`VRFY` / `EXPN`)<br>• Flags missing transport encryption (`STARTTLS`) | [View on GitHub](https://github.com/dhanish0104/nmap-nse-scripts/blob/main/smtp-risk-check.nse) |
+| [`ftp-anon.nse`](./ftp-anon.nse) | **Base Reference 2** | Standard Nmap | Eddie Bell et al. | Base anonymous login verification and directory listing | [View on GitHub](https://github.com/dhanish0104/nmap-nse-scripts/blob/main/ftp-anon.nse) |
+| [`ftp-anon-plus.nse`](./ftp-anon-plus.nse) | **Enhanced 2** | `ftp-anon.nse` | Eddie Bell, Rob Nicholls, Ange Gutek, David Fifield | • Highlights sensitive filenames (`.env`, `id_rsa`, `backup.zip`, `passwd`, etc.) with `[NSE: sensitive]`<br>• Outputs a summarized findings line | [View on GitHub](https://github.com/dhanish0104/nmap-nse-scripts/blob/main/ftp-anon-plus.nse) |
 
 ---
 

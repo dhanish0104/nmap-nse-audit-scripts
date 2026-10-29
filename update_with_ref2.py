@@ -37,9 +37,7 @@ Nmap includes the **Nmap Scripting Engine (NSE)**, which executes automation scr
 
 ## Nmap reference script1 (*.nse script only)
 
-```lua
-{orig_smtp}
-```
+[https://github.com/dhanish0104/nmap-nse-scripts/blob/main/smtp-commands.nse](https://github.com/dhanish0104/nmap-nse-scripts/blob/main/smtp-commands.nse)
 
 ---
 
@@ -77,9 +75,7 @@ PORT   STATE SERVICE
 
 ## Nmap reference script2 (*.nse script only)
 
-```lua
-{orig_ftp}
-```
+[https://github.com/dhanish0104/nmap-nse-scripts/blob/main/ftp-anon.nse](https://github.com/dhanish0104/nmap-nse-scripts/blob/main/ftp-anon.nse)
 
 ---
 
@@ -137,9 +133,7 @@ To transform these base scripts into active security evaluation tools, two disti
 
 ## Nmap newly generated script with enhancement option1 (*.nse script only)
 
-```lua
-{enh_smtp}
-```
+[https://github.com/dhanish0104/nmap-nse-scripts/blob/main/smtp-risk-check.nse](https://github.com/dhanish0104/nmap-nse-scripts/blob/main/smtp-risk-check.nse)
 
 ---
 
@@ -196,9 +190,7 @@ PORT   STATE SERVICE
 
 ## Nmap newly generated script with enhancement option2 (*.nse script only)
 
-```lua
-{enh_ftp}
-```
+[https://github.com/dhanish0104/nmap-nse-scripts/blob/main/ftp-anon-plus.nse](https://github.com/dhanish0104/nmap-nse-scripts/blob/main/ftp-anon-plus.nse)
 
 ---
 
@@ -261,7 +253,7 @@ PORT   STATE SERVICE
 ## GitHub repo link where the two enhanced scripts are found :
 
 All source code, testing environments, and documentation are hosted on GitHub:  
-👉 **GitHub Repository Link:** [https://github.com/dhanish0104/nmap-nse-audit-scripts](https://github.com/dhanish0104/nmap-nse-audit-scripts)
+👉 **GitHub Repository Link:** [https://github.com/dhanish0104/nmap-nse-scripts](https://github.com/dhanish0104/nmap-nse-scripts)
 
 ---
 
