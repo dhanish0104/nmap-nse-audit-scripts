@@ -1,14 +1,8 @@
-import base64
-
-def get_b64(path):
-    with open(path, 'rb') as f:
-        return 'data:image/png;base64,' + base64.b64encode(f.read()).decode()
-
-img_orig_smtp = get_b64('c:/DA-1BLOG/screenshots/orig_smtp_output.png')
-img_orig_ftp = get_b64('c:/DA-1BLOG/screenshots/orig_ftp_output.png')
-img_enh_smtp_risky = get_b64('c:/DA-1BLOG/screenshots/smtp_risky_comparison.png')
-img_enh_smtp_secure = get_b64('c:/DA-1BLOG/screenshots/smtp_secure_scan.png')
-img_enh_ftp = get_b64('c:/DA-1BLOG/screenshots/ftp_anon_plus_output.png')
+img_orig_smtp = "https://raw.githubusercontent.com/dhanish0104/nmap-nse-scripts/main/screenshots/orig_smtp_output.png"
+img_orig_ftp = "https://raw.githubusercontent.com/dhanish0104/nmap-nse-scripts/main/screenshots/orig_ftp_output.png"
+img_enh_smtp_risky = "https://raw.githubusercontent.com/dhanish0104/nmap-nse-scripts/main/screenshots/smtp_risky_comparison.png"
+img_enh_smtp_secure = "https://raw.githubusercontent.com/dhanish0104/nmap-nse-scripts/main/screenshots/smtp_secure_scan.png"
+img_enh_ftp = "https://raw.githubusercontent.com/dhanish0104/nmap-nse-scripts/main/screenshots/ftp_anon_plus_output.png"
 
 with open('C:/Program Files (x86)/Nmap/scripts/smtp-commands.nse', 'r', encoding='utf-8') as f:
     orig_smtp = f.read()
